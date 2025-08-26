@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electronics - ShopEasy</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem;
+        }
+        .product {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            text-align: center;
+            background-color: #fff;
+        }
+        .product img {
+            max-width: 100%;
+            height: auto;
+        }
+        .product h3 {
+            margin: 1rem 0;
+        }
+        .btn {
+            background-color: #ff9900;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>ShopEasy - Electronics</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <h2>Electronics</h2>
+        <div class="product-grid">
+            <div class="product">
+                <img src="laptop.jpg" alt="Laptop">
+                <h3>High-Performance Laptop</h3>
+                <p>$999.99</p>
+                <button onclick="addToCart('High-Performance Laptop', 999.99)">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="smartphone.jpg" alt="Smartphone">
+                <h3>Smartphone Pro</h3>
+                <p>$699.99</p>
+                <button onclick="addToCart('Smartphone Pro', 699.99)">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="headphones.jpg" alt="Headphones">
+                <h3>Noise-Canceling Headphones</h3>
+                <p>$199.99</p>
+                <button onclick="addToCart('Noise-Canceling Headphones', 199.99)">Add to Cart</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 ShopEasy. All rights reserved. | Privacy Policy | Terms of Service</p>
+        </div>
+    </footer>
+
+    <script>
+        function addToCart(productName, price) {
+            // Add product to cart logic
+            alert(`${productName} has been added to your cart.`);
+        }
+    </script>
+</body>
+</html>
