@@ -1,87 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Electronics - ShopEasy</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 2rem;
-        }
-        .product {
-            border: 1px solid #ddd;
-            padding: 1rem;
-            text-align: center;
-            background-color: #fff;
-        }
-        .product img {
-            max-width: 100%;
-            height: auto;
-        }
-        .product h3 {
-            margin: 1rem 0;
-        }
-        .btn {
-            background-color: #ff9900;
-            color: #fff;
-            padding: 0.5rem 1rem;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Electronics Catalog</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #111a2b;
+      --muted: #96a2b8;
+      --text: #e8eef9;
+      --accent: #5aa9ff;
+      --accent-2: #8b5cf6;
+      --ring: rgba(90,169,255,.35);
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color: var(--text); background: radial-gradient(1200px 700px at 80% -20%, #1a2a4a, #0c1426 40%, #050a15 75%), var(--bg);
+    }
+
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
+
+    header {
+      display: grid; gap: 12px; align-items: center;
+      grid-template-columns: 1fr auto; margin-bottom: 18px;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 12px;
+      font-weight: 700; letter-spacing: .3px;
+    }
+    .logo {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 10px 25px rgba(138,92,246,.35);
+    }
+    .sub { color: var(--muted); font-size: 14px; }
+
+    .toolbar {
+      display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    .control {
+      background: var(--panel); border: 1px solid rgba(255,255,255,.06);
+      color: var(--text); padding: 10px 12px; border-radius: 12px;
+      outline: none;
+    }
+    .control:focus { border-color: var(--accent); box-shadow: 0 0 0 6px var(--ring); }
+    .search { min-width: 220px; }
+    .btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border: none; color: white; padding: 10px 14px; border-radius: 12px; cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 8px 20px rgba(90,169,255,.3);
+    }
+    .btn:active { transform: translateY(1px); }
+
+    .grid {
+      display: grid; gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+    .card {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .card:hover { transform: translateY(-3px); border-color: rgba(138,92,246,.45); box-shadow: 0 18px 40px rgba(138,92,246,.15); }
+    .thumb {
+      aspect-ratio: 16/10; display: grid; place-items: center;
+      background: radial-gradient(600px 220px at 20% -10%, rgba(90,169,255,.25), transparent 60%), #0f1a2f;
+      font-weight: 700; letter-spacing: .5px; color: #dbe8ff;
+    }
+    .content { padding: 12px 14px 14px; }
+    .title { margin: 0 0 4px; font-size: 16px; }
+    .meta { display: flex; justify-content: space-between; align-items: baseline; color: var(--muted); font-size: 13px; }
+    .price { color: #c7ff8f; font-weight: 700; }
+    .tag { padding: 2px 8px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); }
+    .actions { display: flex; gap: 8px; margin-top: 10px; }
+    .ghost {
+      background: transparent; border: 1px solid rgba(255,255,255,.14);
+      color: var(--text); padding: 8px 10px; border-radius: 10px; cursor: pointer;
+    }
+    footer { color: var(--muted); font-size: 13px; text-align: center; margin: 28px 0 10px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+  </style>
 </head>
 <body>
+  <div class="wrap">
     <header>
-        <div class="container">
-            <h1>ShopEasy - Electronics</h1>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="cart.html">Cart</a></li>
-                </ul>
-            </nav>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div>ElectroSphere</div>
+          <div class="sub">Curated gadgets for work & play</div>
         </div>
+      </div>
+
+      <form class="toolbar" id="filters" onsubmit="event.preventDefault();">
+        <label class="sr-only" for="q">Search</label>
+        <input id="q" class="control search" type="search" placeholder="Search products…" autocomplete="off" />
+        <select id="cat" class="control">
+          <option value="">All categories</option>
+          <option value="Laptops">Laptops</option>
+          <option value="Audio">Audio</option>
+          <option value="Accessories">Accessories</option>
+          <option value="Smart Home">Smart Home</option>
+        </select>
+        <select id="sort" class="control">
+          <option value="">Sort</option>
+          <option value="price-asc">Price: Low → High</option>
+          <option value="price-desc">Price: High → Low</option>
+          <option value="name-asc">Name: A → Z</option>
+        </select>
+        <button class="btn" id="clear">Clear</button>
+      </form>
     </header>
 
-    <main>
-        <h2>Electronics</h2>
-        <div class="product-grid">
-            <div class="product">
-                <img src="laptop.jpg" alt="Laptop">
-                <h3>High-Performance Laptop</h3>
-                <p>$999.99</p>
-                <button onclick="addToCart('High-Performance Laptop', 999.99)">Add to Cart</button>
-            </div>
-            <div class="product">
-                <img src="smartphone.jpg" alt="Smartphone">
-                <h3>Smartphone Pro</h3>
-                <p>$699.99</p>
-                <button onclick="addToCart('Smartphone Pro', 699.99)">Add to Cart</button>
-            </div>
-            <div class="product">
-                <img src="headphones.jpg" alt="Headphones">
-                <h3>Noise-Canceling Headphones</h3>
-                <p>$199.99</p>
-                <button onclick="addToCart('Noise-Canceling Headphones', 199.99)">Add to Cart</button>
-            </div>
-        </div>
-    </main>
+    <main class="grid" id="grid" aria-live="polite"></main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 ShopEasy. All rights reserved. | Privacy Policy | Terms of Service</p>
-        </div>
-    </footer>
+    <footer>© <span id="year"></span> ElectroSphere — demo catalog page</footer>
+  </div>
 
-    <script>
-        function addToCart(productName, price) {
-            // Add product to cart logic
-            alert(`${productName} has been added to your cart.`);
-        }
-    </script>
+  <script>
+    const products = [
+      { id: 1,  name: "NovaBook 14 Pro",      category: "Laptops",    price: 67990,  badge: "New" },
+      { id: 2,  name: "Aurora ANC Headphones",category: "Audio",      price: 8990,   badge: "Hot" },
+      { id: 3,  name: "Quantum USB-C Hub",    category: "Accessories",price: 2499 },
+      { id: 4,  name: "EchoLite Smart Bulb",  category: "Smart Home", price: 1299,   badge: "Deal" },
+      { id: 5,  name: "PulseFit Band 5",      category: "Accessories",price: 3499 },
+      { id: 6,  name: "StreamMic USB",        category: "Audio",      price: 5599 },
+      { id: 7,  name: "TerraBook 15",         category: "Laptops",    price: 52990 },
+      { id: 8,  name: "Orbit BT Speaker",     category: "Audio",      price: 2999 },
+      { id: 9,  name: "Wisp True Wireless",   category: "Audio",      price: 4499 },
+      { id: 10, name: "Glide 65W Charger",    category: "Accessories",price: 1899 },
+      { id: 11, name: "ZenHome Plug",         category: "Smart Home", price: 1699 },
+      { id: 12, name: "AtlasBook Air 13",     category: "Laptops",    price: 75990,  badge: "New" }
+    ];
+
+    const grid = document.getElementById("grid");
+    const q = document.getElementById("q");
+    const cat = document.getElementById("cat");
+    const sort = document.getElementById("sort");
+    const clear = document.getElementById("clear");
+
+    const formatINR = v =>
+      new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(v);
+
+    function render(list) {
+      grid.innerHTML = "";
+      if (list.length === 0) {
+        grid.innerHTML = `<div class="card" style="padding:18px;">No products found.</div>`;
+        return;
+      }
+      for (const p of list) {
+        const el = document.createElement("article");
+        el.className = "card";
+        el.innerHTML = `
+          <div class="thumb" aria-label="${p.name}">
+            ${p.name.split(" ").slice(0,2).join(" ")}
+          </div>
+          <div class="content">
+            <h3 class="title">${p.name}</h3>
+            <div class="meta">
+              <span class="tag">${p.category}</span>
+              <span class="price">${formatINR(p.price)}</span>
+            </div>
+            <div class="actions">
+              <button class="ghost" aria-label="Add ${p.name} to cart">Add to Cart</button>
+              <button class="ghost" aria-label="View details for ${p.name}">Details</button>
+            </div>
+          </div>`;
+        grid.appendChild(el);
+      }
+    }
+
+    function apply() {
+      const term = q.value.trim().toLowerCase();
+      let list = products.filter(p =>
+        (!cat.value || p.category === cat.value) &&
+        (!term || p.name.toLowerCase().includes(term))
+      );
+
+      switch (sort.value) {
+        case "price-asc":  list = list.slice().sort((a,b) => a.price - b.price); break;
+        case "price-desc": list = list.slice().sort((a,b) => b.price - a.price); break;
+        case "name-asc":   list = list.slice().sort((a,b) => a.name.localeCompare(b.name)); break;
+      }
+      render(list);
+    }
+
+    q.addEventListener("input", apply);
+    cat.addEventListener("change", apply);
+    sort.addEventListener("change", apply);
+    clear.addEventListener("click", () => { q.value = ""; cat.value = ""; sort.value = ""; apply(); });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+    apply();
+  </script>
 </body>
 </html>
